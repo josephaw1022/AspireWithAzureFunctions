@@ -7,10 +7,65 @@ using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 
+
 namespace Microsoft.Extensions.Hosting;
 
 public static class Extensions
 {
+
+
+    // added to support functions
+    public static IHostBuilder AddServiceDefaults(this IHostBuilder builder)
+    {
+        // open telemetry
+        builder.ConfigureLogging(x => {
+            x.AddOpenTelemetry(logging =>
+            {
+                logging.IncludeFormattedMessage = true;
+                logging.IncludeScopes = true;
+            });
+        });
+
+        builder.ConfigureServices((context, services) => {
+
+            services.AddApplicationInsightsTelemetryWorkerService();
+
+            services.AddOpenTelemetry()
+                .WithMetrics(metrics =>
+                {
+                    metrics.AddRuntimeInstrumentation()
+                        .AddBuiltInMeters();
+                })
+                .WithTracing(tracing =>
+                {
+                    if (context.HostingEnvironment.IsDevelopment())
+                    {
+                        // We want to view all traces in development
+                        tracing.SetSampler(new AlwaysOnSampler());
+                    }
+                    tracing.AddAspNetCoreInstrumentation()
+                        .AddGrpcClientInstrumentation()
+                        .AddHttpClientInstrumentation();
+                });
+            services.AddOpenTelemetry();
+        });
+
+        builder.ConfigureServices((context, services) => {
+            services.AddServiceDiscovery();
+            services.ConfigureHttpClientDefaults(http =>
+            {
+                // Turn on resilience by default
+                http.AddStandardResilienceHandler();
+                // Turn on service discovery by default
+                http.UseServiceDiscovery();
+            });
+        });
+
+
+        return builder;
+    }
+
+
     public static IHostApplicationBuilder AddServiceDefaults(this IHostApplicationBuilder builder)
     {
         builder.ConfigureOpenTelemetry();

@@ -11,7 +11,8 @@ var azureFunctionQueueProducer = builder.AddProject<Projects.QueueProducer>("que
     .WithReference(queue);
 
 var azureFunctionQueueConsumer = builder.AddProject<Projects.QueueConsumer>("queueconsumer")
-    .WithReference(queue);
+    .WithReference(queue)
+    .WithReplicas(4);
 
 
 var frontendApp = builder.AddProject<Projects.AzureFunctionsExample_Web>("webfrontend")

@@ -20,17 +20,15 @@ namespace QueueProducer
         }
 
         [Function("Function1")]
-        public  HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req)
+        public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
-
-
 
             var configDictionary = _configuration.AsEnumerable()
                                     .Where(c => c.Value != null)
                                     .ToDictionary(c => c.Key, c => c.Value);
 
-            
+
             var serializedConfiguration = JsonConvert.SerializeObject(configDictionary);
 
 
@@ -43,7 +41,7 @@ namespace QueueProducer
 
             return response;
         }
-    
+
 
         private void PublishRabbitMqMessageAsync(string message)
         {

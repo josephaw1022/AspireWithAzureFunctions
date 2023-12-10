@@ -19,7 +19,7 @@ namespace QueueConsumer
 
 
         [Function("Function1Consumer")]
-        public void Run([RabbitMQTrigger("task_queue", ConnectionStringSetting = "ConnectionStrings:queue")] string myQueueItem)
+        public void Run([RabbitMQTrigger("task_queue", ConnectionStringSetting = "queue")] string myQueueItem)
         {
             _logger.LogInformation($"C# Queue trigger function processed: {myQueueItem}");
         }

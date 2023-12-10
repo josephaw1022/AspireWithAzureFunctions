@@ -12,13 +12,12 @@ namespace Microsoft.Extensions.Hosting;
 
 public static class Extensions
 {
-
-
     // added to support functions
     public static IHostBuilder AddServiceDefaults(this IHostBuilder builder)
     {
         // open telemetry
-        builder.ConfigureLogging(x => {
+        builder.ConfigureLogging(x =>
+        {
             x.AddOpenTelemetry(logging =>
             {
                 logging.IncludeFormattedMessage = true;
@@ -26,7 +25,8 @@ public static class Extensions
             });
         });
 
-        builder.ConfigureServices((context, services) => {
+        builder.ConfigureServices((context, services) =>
+        {
 
             services.AddApplicationInsightsTelemetryWorkerService();
 
@@ -50,7 +50,8 @@ public static class Extensions
             services.AddOpenTelemetry();
         });
 
-        builder.ConfigureServices((context, services) => {
+        builder.ConfigureServices((context, services) =>
+        {
             services.AddServiceDiscovery();
             services.ConfigureHttpClientDefaults(http =>
             {

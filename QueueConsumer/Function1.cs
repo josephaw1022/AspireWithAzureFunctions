@@ -7,21 +7,10 @@ namespace QueueConsumer
 {
     public class Function1
     {
-        private readonly ILogger _logger;
-
-        private readonly IConfiguration _configuration;
-
-        public Function1(ILoggerFactory loggerFactory, IConfiguration config)
-        {
-            _logger = loggerFactory.CreateLogger<Function1>();
-            _configuration = config;
-        }
-
-
         [Function("Function1Consumer")]
-        public void Run([RabbitMQTrigger("task_queue", ConnectionStringSetting = "queue")] string myQueueItem)
+        public void Run([RabbitMQTrigger("taskqueue", ConnectionStringSetting = "queue")] string? myQueueItem)
         {
-            _logger.LogInformation($"C# Queue trigger function processed: {myQueueItem}");
+            Console.WriteLine($"C# Queue trigger function processed: {myQueueItem}");
         }
     }
 }

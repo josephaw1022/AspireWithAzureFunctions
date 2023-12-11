@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AzureFunctionsExample.ApiService\AzureFunctionsExample.ApiService.csproj" />
     <ProjectReference Include="..\AzureFunctionsExample.Web\AzureFunctionsExample.Web.csproj" />
+    <ProjectReference Include="..\MTConsumer\MTConsumer.csproj" />
     <ProjectReference Include="..\QueueConsumer\QueueConsumer.csproj" />
     <ProjectReference Include="..\QueueProducer\QueueProducer.csproj" />
   </ItemGroup>

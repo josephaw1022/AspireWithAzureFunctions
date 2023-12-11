@@ -1,8 +1,8 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var cache = builder.AddRedisContainer("cache");
+// var cache = builder.AddRedisContainer("cache");
 
-var apiservice = builder.AddProject<Projects.AzureFunctionsExample_ApiService>("apiservice");
+// var apiservice = builder.AddProject<Projects.AzureFunctionsExample_ApiService>("apiservice");
 
 
 var queue = builder.AddRabbitMQContainer("queue")
@@ -11,13 +11,16 @@ var queue = builder.AddRabbitMQContainer("queue")
 var azureFunctionQueueProducer = builder.AddProject<Projects.QueueProducer>("queueproducer")
     .WithReference(queue);
 
-var azureFunctionQueueConsumer = builder.AddProject<Projects.QueueConsumer>("queueconsumer")
-    .WithReference(queue);
+//var azureFunctionQueueConsumer = builder.AddProject<Projects.QueueConsumer>("queueconsumer")
+//    .WithReference(queue);
 
 
-var frontendApp = builder.AddProject<Projects.AzureFunctionsExample_Web>("webfrontend")
-    .WithReference(cache)
-    .WithReference(apiservice)
-    .WithReference(azureFunctionQueueProducer);
+var massTransitConsumer = builder.AddProject<Projects.MTConsumer>("masstransitconsumer")
+        .WithReference(queue);
+
+//var frontendApp = builder.AddProject<Projects.AzureFunctionsExample_Web>("webfrontend")
+//    .WithReference(cache)
+//    .WithReference(apiservice)
+//    .WithReference(azureFunctionQueueProducer);
 
 await builder.Build().RunAsync();
